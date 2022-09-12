@@ -63,6 +63,34 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.close()
     }
 
+    fun modifyTransaction(id:Int, ei: String, value: Float, reason: String, date: String): Int {
+
+        val db = this.writableDatabase
+
+        val values = ContentValues()
+        values.put(ID_COL, id)
+        values.put(VALUE_COl, value)
+        values.put(EI_COL, ei)
+        values.put(REAS_COL, reason)
+        values.put(DATE_COL, date)
+        var idn = arrayOf(id.toString())
+
+        val success = db.update(TABLE_NAME, values, "id = ?", idn)
+        db.close()
+        return success
+    }
+
+    fun deleteTransaction(id:Int): Int {
+        val db = this.writableDatabase
+
+        val contentValues = ContentValues()
+        contentValues.put(ID_COL, id)
+
+        val success = db.delete(TABLE_NAME,"id=$id", null)
+        db.close()
+        return success
+    }
+
     @SuppressLint("Range")
     fun getTransactions(): ArrayList<Transaction> {
 

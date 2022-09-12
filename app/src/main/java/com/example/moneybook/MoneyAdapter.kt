@@ -27,7 +27,7 @@ class MoneyAdapter(private var trnsList: ArrayList<Transaction>) : RecyclerView.
     }
 
     fun setOnClickModifyItem(callback:(Transaction)->Unit){
-        this.onClickDeleteItem = callback
+        this.onClickModifyItem = callback
     }
 
     override fun getItemCount(): Int {
