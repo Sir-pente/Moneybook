@@ -1,5 +1,6 @@
 package com.example.moneybook
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.example.moneybook.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.fragment_first.*
+import java.lang.NumberFormatException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,12 +51,16 @@ class MainActivity : AppCompatActivity() {
         buttonNewItem.setOnClickListener {
 
             val db = DBHelper(this, null)
+            var value : Float = 0.0f
+            var reason : String = ""
+            var ei : String
+        try {
+             value = editTextMoneyValue.text.toString().toFloat()
+             reason = editTextReason.text.toString()
+        }
+        catch (e:NumberFormatException) {e.printStackTrace()}
 
-            val value = editTextMoneyValue.text.toString().toFloat()
-            val reason = editTextReason.text.toString()
-            val ei: String
-
-            if (switchIE.isChecked) {
+        if (switchIE.isChecked) {
                 ei = "income"
             } else {
                 ei = "expense"
@@ -68,6 +74,17 @@ class MainActivity : AppCompatActivity() {
 
             editTextMoneyValue.text.clear()
             editTextReason.text.clear()
+        }
+
+        buttonList.setOnClickListener {
+            val db = DBHelper(this, null)
+
+            var trnsList: ArrayList<Transaction>
+            trnsList = db.getTransactions()
+
+            val intent = Intent(this, listActivity::class.java)
+            intent.putExtra("list", trnsList)
+            startActivity(intent)
         }
 
         binding.fab.setOnClickListener { view ->

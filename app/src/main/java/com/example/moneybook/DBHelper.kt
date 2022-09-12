@@ -1,9 +1,12 @@
 package com.example.moneybook
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.lang.Exception
 
 
 class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
@@ -58,6 +61,50 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         // at last we are
         // closing our database
         db.close()
+    }
+
+    @SuppressLint("Range")
+    fun getTransactions(): ArrayList<Transaction> {
+
+        // here we are creating a readable
+        // variable of our database
+        // as we want to read value from it
+        val trnsList: ArrayList<Transaction> = ArrayList()
+        val selectQuery = "SELECT * FROM $TABLE_NAME "
+        val db = this.readableDatabase
+
+        // below code returns a cursor to
+        // read data from the database
+        val cursor: Cursor?
+        try {
+            cursor = db.rawQuery(selectQuery, null)
+        } catch (e: Exception){
+            db.execSQL(selectQuery)
+            e.printStackTrace()
+            return ArrayList()
+        }
+
+        var id: Int
+        var value: Float
+        var reason:String
+        var ei:String
+        var date:String
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(cursor.getColumnIndex("id"))
+                value = cursor.getFloat(cursor.getColumnIndex("value"))
+                ei = cursor.getString(cursor.getColumnIndex("ei"))
+                reason = cursor.getString(cursor.getColumnIndex("reason"))
+                date = cursor.getString(cursor.getColumnIndex("date"))
+
+                val trns = Transaction(id, ei ,value, reason, date )
+                trnsList.add(trns)
+
+            } while (cursor.moveToNext())
+        }
+
+        return trnsList
     }
 
     companion object {

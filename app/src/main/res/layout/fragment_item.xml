@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fragID"
+            android:layout_width="54dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textColor="@color/black"
+            tools:text="ID" />
+
+        <TextView
+            android:id="@+id/fragExpInc"
+            android:layout_width="54dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textColor="@color/black"
+            tools:text="Exp/Inc" />
+
+        <TextView
+            android:id="@+id/fragMoneyValue"
+            android:layout_width="54dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textColor="@color/black"
+            tools:text="Money" />
+
+        <TextView
+            android:id="@+id/fragReason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textColor="@color/black"
+            tools:text="Reason" />
+
+        <TextView
+            android:id="@+id/fragDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            tools:text="@tools:sample/date/ddmmyy" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/fragModify"
+            android:layout_width="wrap_content"
+            android:layout_height="111dp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:text="MODIFY" />
+
+        <Button
+            android:id="@+id/fragDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="107dp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:text="DELETE" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
