@@ -9,7 +9,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.example.moneybook.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.fragment_first.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +31,44 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        var date = Date()
+        val formatter = SimpleDateFormat("dd/MM/yyyy ")
+
+
+        switchIE.setOnCheckedChangeListener { _, isChecked ->
+            if (switchIE.isChecked) {
+                textViewIE.setText("+")
+
+            } else {
+                textViewIE.setText("-")
+
+            }
+        }
+
+        buttonNewItem.setOnClickListener {
+
+            val db = DBHelper(this, null)
+
+            val value = editTextMoneyValue.text.toString().toFloat()
+            val reason = editTextReason.text.toString()
+            val ei: String
+
+            if (switchIE.isChecked) {
+                ei = "income"
+            } else {
+                ei = "expense"
+            }
+
+            val datepat = formatter.format(date)
+
+            db.addItem(value, ei ,reason, datepat)
+
+            Toast.makeText(this, value.toString() + " added to database", Toast.LENGTH_LONG).show()
+
+            editTextMoneyValue.text.clear()
+            editTextReason.text.clear()
+        }
 
         binding.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
