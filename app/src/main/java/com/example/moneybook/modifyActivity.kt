@@ -57,17 +57,20 @@ class modifyActivity : AppCompatActivity() {
                       var date = datef.format(formatter)
                       db.modifyTransactionDate(id, ei, valueform, reason, date.toString())
                       Toast.makeText(this, id.toString() + " modified", Toast.LENGTH_LONG).show()
-                  } else {Toast.makeText(this,  "wrong date format", Toast.LENGTH_LONG).show()}
+                      editTextMoneyValuemod.text.clear()
+                      editTextreasonmod.text.clear()
+                      editTextDatemod.text.clear()
+                  } else {
+                      Toast.makeText(this,  "wrong date format", Toast.LENGTH_LONG).show()
+                      editTextDatemod.text.clear()
+                  }
               } else {
                   db.modifyTransaction(id, ei, valueform, reason)
                   Toast.makeText(this, id.toString() + " modified", Toast.LENGTH_LONG).show()
+                  editTextMoneyValuemod.text.clear()
+                  editTextreasonmod.text.clear()
+                  editTextDatemod.text.clear()
               }
-
-
-
-              editTextMoneyValuemod.text.clear()
-              editTextreasonmod.text.clear()
-              editTextDatemod.text.clear()
           }
             else {
               Toast.makeText(this,  " need to complete fields", Toast.LENGTH_LONG).show()
