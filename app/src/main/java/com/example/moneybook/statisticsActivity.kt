@@ -66,7 +66,7 @@ class statisticsActivity : AppCompatActivity() {
 
             textViewInc.setText(inc.toString())
             textViewExp.setText(exp.toString())
-            textViewBal.setText((bal.toString()))
+            textViewBal.setText((valueform.toString()))
         }
     }
 }
