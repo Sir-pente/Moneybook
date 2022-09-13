@@ -51,10 +51,22 @@ class statisticsActivity : AppCompatActivity() {
             var trans : Transaction
             for (trans in trnsList) {
                 if (trans.ei.toString().equals("income")) {
-                    inc = inc + trans.moneyVal.toFloat()
+
+                    var money = trans.moneyVal.toFloat()
+
+                    val df = DecimalFormat("#.##")
+                    df.roundingMode = RoundingMode.HALF_EVEN
+                    var moneyform = df.format(money).toFloat()
+
+                    inc = inc + moneyform
 
                 } else  {
-                    exp = exp + trans.moneyVal.toFloat()
+                    var money = trans.moneyVal.toFloat()
+
+                    val df = DecimalFormat("#.##")
+                    df.roundingMode = RoundingMode.HALF_EVEN
+                    var moneyform = df.format(money).toFloat()
+                    exp = exp + moneyform
                 }
             }
 
