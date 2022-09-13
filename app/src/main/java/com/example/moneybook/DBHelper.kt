@@ -34,6 +34,23 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         onCreate(db)
     }
 
+    fun modifyTransactionDate(id:Int, ei: String, value: Float, reason: String, date: String): Int {
+
+        val db = this.writableDatabase
+
+        val values = ContentValues()
+        values.put(ID_COL, id)
+        values.put(VALUE_COl, value)
+        values.put(EI_COL, ei)
+        values.put(REAS_COL, reason)
+        values.put(DATE_COL, date)
+        var idn = arrayOf(id.toString())
+
+        val success = db.update(TABLE_NAME, values, "id = ?", idn)
+        db.close()
+        return success
+    }
+
     // This method is for adding data in our database
     fun addItem(value: Float, ei: String, reason: String, date: String) {
 
@@ -63,7 +80,118 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.close()
     }
 
-    fun modifyTransaction(id:Int, ei: String, value: Float, reason: String, date: String): Int {
+    @SuppressLint("Range")
+    fun getTransBetweenDate(datestart: String, datefin: String): ArrayList<Transaction>{
+        val db = this.readableDatabase
+        val cursor: Cursor?
+        val trnsList: ArrayList<Transaction> = ArrayList()
+        val query = "SELECT * FROM $TABLE_NAME WHERE $DATE_COL  BETWEEN $datestart AND $datefin"
+        try {
+            cursor = db.rawQuery(query, null)
+        } catch (e: Exception){
+            db.execSQL(query)
+            e.printStackTrace()
+            return ArrayList()
+        }
+        var id: Int
+        var value: Float
+        var reason:String
+        var ei:String
+        var date:String
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(cursor.getColumnIndex("id"))
+                value = cursor.getFloat(cursor.getColumnIndex("value"))
+                ei = cursor.getString(cursor.getColumnIndex("ei"))
+                reason = cursor.getString(cursor.getColumnIndex("reason"))
+                date = cursor.getString(cursor.getColumnIndex("date"))
+
+                val trns = Transaction(id, ei ,value, reason, date )
+                trnsList.add(trns)
+
+            } while (cursor.moveToNext())
+        }
+        return trnsList
+    }
+
+    @SuppressLint("Range")
+    fun getTransByDateAndReas(datestart: String, datefin: String, reason: String): ArrayList<Transaction>{
+
+
+        val db = this.readableDatabase
+        val cursor: Cursor?
+        val trnsList: ArrayList<Transaction> = ArrayList()
+        val query = "SELECT * FROM $TABLE_NAME WHERE $DATE_COL BETWEEN $datestart AND $datefin AND $REAS_COL =  ?"
+
+        try {
+            cursor = db.rawQuery(query, arrayOf(reason))
+        } catch (e: Exception){
+            db.execSQL(query)
+            e.printStackTrace()
+            return ArrayList()
+        }
+        var id: Int
+        var value: Float
+        var reason:String
+        var ei:String
+        var date:String
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(cursor.getColumnIndex("id"))
+                value = cursor.getFloat(cursor.getColumnIndex("value"))
+                ei = cursor.getString(cursor.getColumnIndex("ei"))
+                reason = cursor.getString(cursor.getColumnIndex("reason"))
+                date = cursor.getString(cursor.getColumnIndex("date"))
+
+                val trns = Transaction(id, ei ,value, reason, date )
+                trnsList.add(trns)
+
+            } while (cursor.moveToNext())
+        }
+        return trnsList
+    }
+
+    @SuppressLint("Range")
+    fun getTransByReason (reason: String): ArrayList<Transaction>{
+        val db = this.readableDatabase
+        val trnsList: ArrayList<Transaction> = ArrayList()
+        val cursor: Cursor?
+        val query = "SELECT * FROM $TABLE_NAME WHERE reason = ?"
+
+        try {
+            cursor = db.rawQuery(query, arrayOf(reason))
+        } catch (e: Exception){
+            db.execSQL(query)
+            e.printStackTrace()
+            return ArrayList()
+        }
+
+        var id: Int
+        var value: Float
+        var reason:String
+        var ei:String
+        var date:String
+
+        if (cursor.moveToFirst()) {
+            do {
+                id = cursor.getInt(cursor.getColumnIndex("id"))
+                value = cursor.getFloat(cursor.getColumnIndex("value"))
+                ei = cursor.getString(cursor.getColumnIndex("ei"))
+                reason = cursor.getString(cursor.getColumnIndex("reason"))
+                date = cursor.getString(cursor.getColumnIndex("date"))
+
+                val trns = Transaction(id, ei ,value, reason, date )
+                trnsList.add(trns)
+
+            } while (cursor.moveToNext())
+        }
+        return trnsList
+    }
+
+
+    fun modifyTransaction(id:Int, ei: String, value: Float, reason: String): Int {
 
         val db = this.writableDatabase
 
@@ -72,7 +200,6 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         values.put(VALUE_COl, value)
         values.put(EI_COL, ei)
         values.put(REAS_COL, reason)
-        values.put(DATE_COL, date)
         var idn = arrayOf(id.toString())
 
         val success = db.update(TABLE_NAME, values, "id = ?", idn)

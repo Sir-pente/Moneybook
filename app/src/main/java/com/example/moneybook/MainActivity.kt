@@ -14,6 +14,8 @@ import android.widget.Toast
 import com.example.moneybook.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.fragment_first.*
 import java.lang.NumberFormatException
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         var date = Date()
-        val formatter = SimpleDateFormat("dd/MM/yyyy ")
+        val formatter = SimpleDateFormat("yyyy-MM-dd ")
 
 
         switchIE.setOnCheckedChangeListener { _, isChecked ->
@@ -50,30 +52,42 @@ class MainActivity : AppCompatActivity() {
 
         buttonNewItem.setOnClickListener {
 
-            val db = DBHelper(this, null)
-            var value : Float = 0.0f
-            var reason : String = ""
-            var ei : String
-        try {
-             value = editTextMoneyValue.text.toString().toFloat()
-             reason = editTextReason.text.toString()
-        }
-        catch (e:NumberFormatException) {e.printStackTrace()}
+            if (editTextMoneyValue.text.isNotEmpty() && editTextReason.text.isNotEmpty()) {
 
-        if (switchIE.isChecked) {
-                ei = "income"
+                val db = DBHelper(this, null)
+                val value = editTextMoneyValue.text.toString().toFloat()
+                val df = DecimalFormat("#.##")
+
+                df.roundingMode = RoundingMode.HALF_EVEN
+                var valueform = df.format(value).toFloat()
+                var ei: String
+                var reason = editTextReason.text.toString()
+
+                if (switchIE.isChecked) {
+                    ei = "income"
+                } else {
+                    ei = "expense"
+                }
+
+                val datepat = formatter.format(date)
+
+                db.addItem(valueform, ei, reason, datepat)
+
+                Toast.makeText(this, value.toString() + " added to database", Toast.LENGTH_LONG)
+                    .show()
+
+                editTextMoneyValue.text.clear()
+                editTextReason.text.clear()
             } else {
-                ei = "expense"
+                Toast.makeText(this, "need to complete fields", Toast.LENGTH_LONG)
+                    .show()
             }
 
-            val datepat = formatter.format(date)
+        }
 
-            db.addItem(value, ei ,reason, datepat)
-
-            Toast.makeText(this, value.toString() + " added to database", Toast.LENGTH_LONG).show()
-
-            editTextMoneyValue.text.clear()
-            editTextReason.text.clear()
+        buttonStats.setOnClickListener {
+            val intent = Intent(this, statisticsActivity::class.java)
+            startActivity(intent)
         }
 
         buttonList.setOnClickListener {
