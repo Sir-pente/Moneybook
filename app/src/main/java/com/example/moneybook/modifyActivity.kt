@@ -51,7 +51,7 @@ class modifyActivity : AppCompatActivity() {
               var reason = editTextreasonmod.text.toString()
 
               if (switchDate.isChecked && editTextDatemod.text.isNotEmpty()) {
-                  if (editTextDatemod.text.toString().matches("\\d{4}-\\d{2}-\\d{2}".toRegex())) {
+                  if (editTextDatemod.text.toString().matches("^\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])\$".toRegex())) {
 
                       var datef = editTextDatemod.text.toString()
                       var date = datef.format(formatter)

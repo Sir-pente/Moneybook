@@ -20,8 +20,8 @@ class statisticsActivity : AppCompatActivity() {
             var bal : Float =  0.0f
             if (editTextDate.text.isNotEmpty() && editTextDate2.text.isNotEmpty() && editTextReasonstats.text.isEmpty()) {
 
-                if (editTextDate.text.toString().matches("\\d{4}-\\d{2}-\\d{2}".toRegex())
-                    && editTextDate2.text.toString().matches("\\d{4}-\\d{2}-\\d{2}".toRegex())){
+                if (editTextDate.text.toString().matches("\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])\$".toRegex())
+                    && editTextDate2.text.toString().matches("\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])\$".toRegex())){
 
                 var datestart = "'"+editTextDate.text.toString()+"'"
                 var datefin = "'"+editTextDate2.text.toString()+"'"
@@ -37,8 +37,8 @@ class statisticsActivity : AppCompatActivity() {
             } else if (editTextDate.text.isNotEmpty() && editTextDate2.text.isNotEmpty() &&
                         editTextReasonstats.text.toString().isNotEmpty()) {
 
-                if (editTextDate.text.toString().matches("\\d{4}-\\d{2}-\\d{2}".toRegex())
-                    && editTextDate2.text.toString().matches("\\d{4}-\\d{2}-\\d{2}".toRegex())) {
+                if (editTextDate.text.toString().matches("\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])\$".toRegex())
+                    && editTextDate2.text.toString().matches("\\d{4}\\-(0[1-9]|1[012])\\-(0[1-9]|[12][0-9]|3[01])\$".toRegex())) {
 
                     var datestart = "'" + editTextDate.text.toString() + "'"
                     var datefin = "'" + editTextDate2.text.toString() + "'"
